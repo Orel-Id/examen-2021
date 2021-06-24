@@ -7,7 +7,7 @@ require 'view/Header_Footer/header.php';
 require 'model/liste_transactions.php';
 require 'model/fonctions.php';
     $error = false;
-    var_dump($_POST);
+
     $messageError = [];
 
         if(!isValidFloat((float) $_POST["montant"])){
@@ -15,17 +15,36 @@ require 'model/fonctions.php';
             $messageError["montant"] = "Le montant n'est pas valide";
         }
 
+        //var_dump(date1IsMoreRecentThanDate2(,));
         $date = explode("-",$_POST["date"]);
-        if(isset($_POST["date"]) AND !checkdate($date[1],$date[2],$date[0])){
+    $now = date('m-d-Y');
+
+        if(isset($_POST["date"]) AND (!checkdate($date[1],$date[2],$date[0]) OR !date1IsMoreRecentThanDate2($date[1]."-".$date[2]."-".$date[0],$now))){
             $error = true;
             $messageError["date"] = "La date n'est pas valide";
         }
 
+        if(!isValidInt((int) $_POST["destinataire"]) AND ((int) $_POST["emmetteur"]) > 0 AND ((int) $_POST["emmetteur"]) < count($contacts)){
+            $error = true;
+            $messageError["destinataire"] = "Le destinataire n'est pas valide";
+        }
 
+        if(!isValidInt((int) $_POST["emmetteur"]) AND ((int) $_POST["emmetteur"]) > 0 AND ((int) $_POST["emmetteur"]) < count($contacts)){
+            $error = true;
+            $messageError["emmetteur"] = "L'emmetteur n'est pas valide";
+        }
+        $transaction_error = [];
 
+        if($error){
+            $transaction_error["montant"] = $_POST["montant"];
+            $date = $_POST["date"];
+            $transaction_error["destinataire"] = $_POST["destinataire"];
+            require 'view/ViewAjouterTransaction.php';
 
-    var_dump($messageError);
-
+        }else{
+            array_push($transactions,array('date'=>$_POST["date"],'emetteur'=>$_POST["emmetteur"],'destinataire'=>$_POST["destinataire"],'montant'=>((float) $_POST["montant"])));
+                    require 'view/Liste_transactions.php';
+                }
 require 'view/Header_Footer/footer.php';
 
 ?>

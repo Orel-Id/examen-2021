@@ -91,8 +91,9 @@ function isValidDate($date)
  * @return bool true : si la date1 est plus grande que la date2 OU false si date1 est plus petite que la date2
  */
 function date1IsMoreRecentThanDate2($date1, $date2){
-    return (strtotime($date1) > strtotime($date2));
+    return (strtotime($date1) >= strtotime($date2));
 }
+
 function formatNumeroCompte($chiffres)
 {
     array_splice($chiffres, 5, 0, ' ');

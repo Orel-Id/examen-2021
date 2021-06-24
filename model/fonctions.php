@@ -96,18 +96,28 @@ function date1IsMoreRecentThanDate2($date1, $date2){
 
 function formatNumeroCompte($chiffres)
 {
-    array_splice($chiffres, 5, 0, ' ');
-    array_splice($chiffres, 10, 0, ' ');
-    array_splice($chiffres, 15, 0, ' ');
+    $array_num = str_split($chiffres);
+    for($i=5;$i<13;$i++){
+        $array_num[$i]= 'X';
+    }
 
-    return $chiffres;
+    array_splice($array_num, 5, 0, ' ');
+    array_splice($array_num, 10, 0, ' ');
+    array_splice($array_num, 15, 0, ' ');
+
+    $compte_number = "";
+    foreach ($array_num as $num){
+        $compte_number = $compte_number.$num;
+    }
+
+    return $compte_number;
 }
 function formatListTransactions($montant,$destinataire,$emmetteur)
 {
 
-    $compteEmmetteur = $emmetteur["compte"];
-    $compteDestinateur = $destinataire["compte"];
-    return ($montant > 0) ? $emmetteur["nom"]." ".$emmetteur["compte"]: $destinataire["nom"]." ".$destinataire["compte"];
+    $compteEmmetteur = formatNumeroCompte($emmetteur["compte"]);
+    $compteDestinateur = formatNumeroCompte($emmetteur["compte"]);
+    return ($montant > 0) ? $emmetteur["nom"]." ".$compteEmmetteur: $destinataire["nom"]." ".$compteDestinateur;
 }
 
 

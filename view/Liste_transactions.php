@@ -8,4 +8,5 @@
         </li>
         <?php endforeach; ?>
     </ul>
+    <a href="AjouterTransaction.php">Ajouter une transaction</a>
 </div>

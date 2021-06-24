@@ -52,10 +52,21 @@ function isValidName($name)
  * @param $number le nombre a vérifier
  * @return bool false si c'est pas un  nombre sinon true
  */
-function isValidNumber($number)
+function isValidFloat($number)
 {
-    $test = empty($number);
-    $test = $test && is_numeric($number);
+    $test = !empty($number);
+    $test = $test && is_float($number);
+    return $test;
+}
+
+/**
+ * @param $number le nombre a vérifier
+ * @return bool false si c'est pas un  nombre sinon true
+ */
+function isValidInt($number)
+{
+    $test = !empty($number);
+    $test = $test && is_int($number);
     return $test;
 }
 
@@ -66,11 +77,12 @@ function isValidNumber($number)
  */
 function isValidDate($date)
 {
+
     foreach ($date as $num) {
-        if (!is_numeric($num))
+        if ($num == "")
             return false;
     }
-    return checkdate($date[1], $date[0], $date[2]);
+    return checkdate($date[2], $date[1], $date[0]);
 }
 
 /**
